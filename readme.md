@@ -1,98 +1,105 @@
-# Docker Symfony Starter Kit
+# 🍳 Recipe Forum — Symfony + Docker
 
-Starter kit is based on [The perfect kit starter for a Symfony 4 project with Docker and PHP 7.2](https://medium.com/@romaricp/the-perfect-kit-starter-for-a-symfony-4-project-with-docker-and-php-7-2-fda447b6bca1)
+A recipe-sharing web forum built with **PHP Symfony 8.3** and containerised with **Docker**. Users can add, rate, search, and manage recipes with full role-based access control.
 
-# Recipe Forum Project
+---
 
-This project is a **recipe forum** built with **PHP Symfony** and **Twig** as the templating engine.** It allows users to add, rate, and manage recipes, including uploading images. The system focuses on **CRUD operations** (Create, Read, Update, Delete) while enforcing access permissions for different user roles. The interface is styled using **Bootstrap**, ensuring a modern and responsive design.
+## 🧩 Features
 
-A **recipe search engine** has already been implemented and will be further expanded in future updates.
+- **User auth** — registration, login, and role-based access control (user / admin)
+- **Recipe management** — full CRUD: add, edit, delete, rate recipes with image uploads
+- **Recipe search engine** — search by name, ingredient, or category
+- **Admin panel** — manage users, recipes, and reported content
+- **Email testing** — integrated Maildev for local email simulation
+- **Responsive UI** — Bootstrap 5
 
-## Key Features
+---
 
-- **User authentication** with role-based access control
-- **Recipe management** (adding, editing, deleting, and rating recipes)
-- **Image uploads** for recipes
-- **Recipe search engine** (with planned improvements)
-- **Responsive UI** using Bootstrap
+## 🛠️ Tech Stack
 
-## Technology Stack
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8.3, Symfony LTS |
+| Templating | Twig |
+| Database | MySQL 8.3 |
+| Server | Apache 2.4 (Debian) |
+| Containerisation | Docker, Docker Compose |
+| Dev Tools | Xdebug, Maildev, Composer, NodeJS LTS |
 
-- **Symfony (PHP 8.3 FPM)**
-- **Twig (Templating Engine)**
-- **MySQL 8.3.1** (Database)
-- **Apache 2.4.57 (Debian)**
-- **NodeJS LTS (Latest)**
-- **Composer (Dependency Management)**
-- **Xdebug (Debugging)**
-- **Maildev (Email Testing)**
+---
 
-## Installation
+## ⚙️ Local Setup
 
-1. *(Optional)* Add the following line to your `hosts` file:
-   ```bash
-   127.0.0.1   symfony.local
-   ```
-2. Run `build-env.sh` (or `build-env.ps1` on Windows).
-3. Enter the PHP container:
-   ```bash
-   docker-compose exec php bash
-   ```
-4. Install Symfony inside the container:
-   ```bash
-   cd app
-   rm .gitkeep
-   git config --global user.email "you@example.com"
-   symfony new ../app --version=lts --webapp
-   chown -R dev.dev *
-   ```
+**1. Clone and build containers**
 
-## URLs and Ports
-
-- **Project URL:**
-  ```bash
-  http://localhost:8000
-  ```
-  or
-  ```bash
-  http://symfony.local:8000
-  ```
-- **Database (MySQL):**
-  - Inside container: `mysql`, port `3306`
-  - Outside container: `localhost`, port `3307`
-- **Maildev (Email testing):** Available on port `8001`.
-- **Xdebug:** Available remotely on port `9000`.
-
-## Database Configuration
-
-Modify the **`.env`** file in Symfony to configure the database:
-
-```yaml
-DATABASE_URL=mysql://symfony:symfony@mysql:3306/symfony?serverVersion=5.7
+```bash
+git clone https://github.com/Mifiszon/Cookbook-Forum.git
+cd Cookbook-Forum
+bash build-env.sh          # Windows: build-env.ps1
 ```
 
-## Useful Commands
+**2. Enter the PHP container and install Symfony**
 
-- `docker-compose up -d` - Start containers
-- `docker-compose down` - Stop containers
-- `docker-compose exec php bash` - Enter PHP container
-- `docker-compose exec mysql bash` - Enter MySQL container
-- `docker-compose exec apache bash` - Enter Apache2 container
+```bash
+docker-compose exec php bash
+cd app && rm .gitkeep
+symfony new ../app --version=lts --webapp
+chown -R dev.dev *
+```
 
-## Future Development
+**3. Configure database in `.env`**
 
-- Further improvements to the **recipe search engine**.
-- Expansion of **user access control** for different roles.
-- Additional features for rating and commenting on recipes.
+```env
+DATABASE_URL=mysql://symfony:symfony@mysql:3306/symfony?serverVersion=8.3
+```
 
-## Screenshots
+**4. Run migrations**
 
+```bash
+php bin/console doctrine:migrations:migrate
+```
 
-## Troubleshooting
+---
 
-- **ERROR: for apache 'ContainerConfig'** (2024.05.11)
+## 🌐 URLs & Ports
 
-  If you encounter the error `ERROR: for apache 'ContainerConfig'` after running `docker-compose up -d`, you can resolve it with:
-  ```bash
-  docker compose up -d --force-recreate
-  ```
+| Service | URL |
+|---|---|
+| App | http://localhost:8000 |
+| App (hosts alias) | http://symfony.local:8000 |
+| Maildev | http://localhost:8001 |
+| MySQL (external) | localhost:3307 |
+| Xdebug | port 9000 |
+
+---
+
+## 🐳 Docker Commands
+
+```bash
+docker-compose up -d          # start all containers
+docker-compose down           # stop containers
+docker-compose exec php bash  # enter PHP container
+docker-compose exec mysql bash # enter MySQL container
+```
+
+**Troubleshooting:** If you hit `ERROR: for apache 'ContainerConfig'` after `docker-compose up -d`:
+
+```bash
+docker compose up -d --force-recreate
+```
+
+---
+
+## 🔭 Future Development
+
+- Expanded search (filters by rating, prep time, dietary tags)
+- REST API endpoint for recipe data export
+- Pagination and infinite scroll for recipe feed
+- Enhanced admin analytics (most viewed, top-rated recipes)
+
+---
+
+## 👨‍💻 Author
+
+**Michał Ogiba** — Jagiellonian University, 2024  
+[linkedin.com/in/michalogiba](https://linkedin.com/in/michalogiba) · [github.com/Mifiszon](https://github.com/Mifiszon)
